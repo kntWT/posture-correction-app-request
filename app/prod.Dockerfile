@@ -13,7 +13,7 @@ RUN pnpm install --frozen-lockfile
 
 # ソースコードをコピーしてNext.jsアプリケーションをビルド
 COPY . .
-RUN pnpm run build
+RUN pnpm build
 
 # Stage 2: 本番環境のセットアップ
 FROM node:22.17 AS runner
@@ -25,12 +25,13 @@ ENV NODE_ENV production
 
 # Next.jsのスタンドアロン出力ディレクトリをコピー
 # Next.js 12以降のstandalone出力機能を利用
-COPY --from=builder /app/.next/standalone ./standalone
 COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/.next/standalone ./.next/standalone
 COPY --from=builder /app/public ./public
 
 # Next.jsサーバーのポート
 EXPOSE 3000
 
 # Next.jsアプリケーションを起動
-CMD ["node", "standalone/server.js"]
+CMD ["node", ".next/standalone/server.js"]
+
