@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
 import { ProjectProvider } from "@/contexts/ProjectContext";
+import { BackendHostProvider } from "@/contexts/BackendHostContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,10 +22,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ProjectProvider>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
-          <Toaster />
+          <BackendHostProvider>
+            <AuthProvider>
+              {children}
+              <Toaster />
+            </AuthProvider>
+          </BackendHostProvider>
         </ProjectProvider>
       </body>
     </html>

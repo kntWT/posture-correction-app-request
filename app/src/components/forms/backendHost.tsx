@@ -6,7 +6,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { backendHostNames, backendHosts } from "@/configs/backend-host";
+import { backendHosts } from "@/configs/backend-host";
 import {
   BackendHostFormSchema,
   backendHostSchema,
@@ -14,10 +14,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import {
-  HealthCheckStatusColor,
-  useBackendHostStatusBadge,
-} from "../common/backendHostStatusBudge";
+import { BackendHostStatusBadge } from "../common/backendHostStatusBudge";
+import { useBackendHostWithStatus } from "@/contexts/BackendHostContext";
 
 type Props = {
   onSubmit: (data: BackendHostFormSchema) => void;
@@ -44,6 +42,8 @@ export function BackendHostForm({ onSubmit, defaultValue }: Props) {
     }
   }, [watchBackendHost, onSubmit]);
 
+  const { backendHostsWithStatus } = useBackendHostWithStatus();
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <Label htmlFor="backendHost">バックエンドのホスト</Label>
@@ -63,21 +63,15 @@ export function BackendHostForm({ onSubmit, defaultValue }: Props) {
               </SelectTrigger>
               <SelectContent>
                 {backendHosts.map((host) => {
-                  const status = useBackendHostStatusBadge({
-                    backendHost: host,
-                    size: "4",
-                  });
                   return (
                     <SelectItem
                       key={host.name}
                       value={host.name}
-                      disabled={
-                        status.status !== HealthCheckStatusColor.SUCCESS
-                      }
+                      disabled={!backendHostsWithStatus[host.name].available}
                     >
                       <p className="flex gap-2">
                         {host.name}
-                        {status.badge}
+                        <BackendHostStatusBadge backendHost={host} />
                       </p>
                     </SelectItem>
                   );
