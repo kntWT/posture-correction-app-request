@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Posture Correction App Request
 
-## Getting Started
+このリポジトリは、Next.js + TypeScript + Firebase + SWR + Zod + Tailwind CSS などを用いた姿勢矯正アプリのリクエスト管理 Web アプリです。\
+研究室の Galleria2 台のうちどちらを使うか選べます．（選択肢たもの以外にはデータが登録されないので注意してください）
 
-First, run the development server:
+## 主な機能
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Google 認証によるログイン
+- プロジェクト作成
+- バックエンドホストの選択
+
+## ディレクトリ構成
+
+```
+app/
+  ├─ src/
+  │   ├─ app/         # Next.js App Router配下のページ
+  │   ├─ components/  # UI・フォーム・共通部品
+  │   ├─ contexts/    # React Context (認証・プロジェクト)
+  │   ├─ lib/         # APIクライアント・バリデーションスキーマ等
+  │   ├─ configs/     # バックエンドホスト等の設定
+  ├─ public/          # 静的ファイル
+  ├─ package.json     # 依存パッケージ
+  ├─ ...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## セットアップ方法
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. 依存パッケージのインストール
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm install
+```
 
-## Learn More
+2. 開発サーバ起動
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. ブラウザで [http://localhost:3000](http://localhost:3000) を開く
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Docker での起動
 
-## Deploy on Vercel
+1. `.env` ファイルをプロジェクトルートに作成し、必要な環境変数を記載
+2. 下記コマンドで起動
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+docker compose up --build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 主な技術スタック
+
+- Next.js 15 (App Router)
+- React 19
+- TypeScript
+- Firebase Auth
+- SWR (API 通信)
+- react-hook-form + zod (バリデーション)
+- Tailwind CSS, shadcn/ui, lucide-react (UI)
+
+## 環境変数
+
+- env.d.ts を参考に適切な環境変数を設定してください
+- BACKEND_HOST は必要に応じて増減してください\
+  また，バックエンドホストの選択肢を`app/src/configs/backend-host/backendHost.ts`で定義しています．同じディレクトリの`sample.ts`を参考に定義してください．\
+  この時，`as const`をつけないと型情報がおかしくなるので注意してください．
+
+## 開発 Tips
+
+- バックエンドホストやユーザ情報は localStorage で永続化され、リロードしても保持されます。
+- API 連携は SWR のカスタムフックで行っています。
+- 型安全なバリデーションは zod で実装。
+
+---
+
+ご不明点・要望は Issue または PR でご連絡ください。
