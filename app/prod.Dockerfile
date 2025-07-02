@@ -25,13 +25,14 @@ ENV NODE_ENV production
 
 # Next.jsのスタンドアロン出力ディレクトリをコピー
 # Next.js 12以降のstandalone出力機能を利用
+COPY --from=builder /app/next.config.ts ./
 COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/.next/standalone ./.next/standalone
+COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/public ./public
 
 # Next.jsサーバーのポート
 EXPOSE 3000
 
 # Next.jsアプリケーションを起動
-CMD ["node", ".next/standalone/server.js"]
+CMD ["node", "server.js"]
 

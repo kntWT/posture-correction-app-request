@@ -9,7 +9,16 @@ services:
     env_file:
       - .env
     volumes:
-      - ./app:/app
+      - ./app/src:/app/src
+      - ./app/public:/app/public
+      - ./app/next.config.ts:/app/next.config.ts
+      - ./app/components.json:/app/components.json
+      - ./app/package.json:/app/package.json
+      - ./app/pnpm-lock.yaml:/app/pnpm-lock.yaml
+      - ./app/tsconfig.json:/app/tsconfig.json
+      - ./app/tsconfig.app.json:/app/tsconfig.app.json
+      - ./app/tsconfig.json:/app/tsconfig.json
+      - ./app/.env.local:/app/.env.local
       - node_modules:/app/node_modules
       - build:/app/.next
     networks:
