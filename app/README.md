@@ -62,9 +62,9 @@ docker compose up --build
 ## 環境変数
 
 - env.d.ts を参考に適切な環境変数を設定してください
-- BACKEND_HOST は必要に応じて増減してください\
-  また，バックエンドホストの選択肢を`app/src/configs/backend-host/backendHost.ts`で定義しています．同じディレクトリの`sample.ts`を参考に定義してください．\
-  この時，`as const`をつけないと型情報がおかしくなるので注意してください．
+- バックエンドホストの選択肢を`app/src/configs/backend-host/backendHost.ts`で定義しています．同じディレクトリの`sample.ts`を参考に定義してください．\
+  ここで設定した`baseUrl`を nginx でプロキシするようにしてください．\
+  また，この時`as const`をつけないと型情報がおかしくなるので注意してください．
 
 ## 開発 Tips
 
