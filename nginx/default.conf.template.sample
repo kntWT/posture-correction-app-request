@@ -1,0 +1,30 @@
+server {
+    listen 80;
+    server_name localhost;
+
+    resolver 127.0.0.11 valid=30s;
+
+    location /api/v1/ {
+        proxy_pass http://backend-host-1:${BACKEND_PORT}/;
+        proxy_set_header Host _host;
+        proxy_set_header X-Real-IP _remote_addr;
+        proxy_set_header X-Forwarded-For _proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto _scheme;
+    }
+
+    location /api/v2/ {
+        proxy_pass http://backend-host-2:${BACKEND_PORT}/;
+        proxy_set_header Host _host;
+        proxy_set_header X-Real-IP _remote_addr;
+        proxy_set_header X-Forwarded-For _proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto _scheme;
+    }
+
+    location / {
+        proxy_pass http://app:3000;
+        proxy_set_header Host _host;
+        proxy_set_header X-Real-IP _remote_addr;
+        proxy_set_header X-Forwarded-For _proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto _scheme;
+    }
+}

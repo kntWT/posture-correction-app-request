@@ -4,8 +4,6 @@ services:
     build:
       context: app
       dockerfile: ${MODE}.Dockerfile
-    ports:
-      - "7001:3000"
     env_file:
       - .env
     volumes:
@@ -23,9 +21,23 @@ services:
       - build:/app/.next
     networks:
       - posture-correction-app-request
+    tty: true
+
+  web:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    ports:
+      - "7001:80"
+    depends_on:
+      - app
+    networks:
+      - posture-correction-app-request
     extra_hosts:
       - "backend-host-1:${BACKEND_HOST_1}"
       - "backend-host-2:${BACKEND_HOST_2}"
+    env_file:
+      - .env
     tty: true
 
 volumes:
