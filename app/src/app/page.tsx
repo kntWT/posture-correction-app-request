@@ -3,16 +3,14 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { auth } from "@/lib/firebaseConfig";
-import { signOut } from "firebase/auth";
 import { toast } from "sonner";
 
 export default function HomePage() {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
 
   const handleLogout = async () => {
     try {
-      await signOut(auth);
+      await logout();
       toast.success("Logged out successfully!");
     } catch (error) {
       console.error("Logout failed:", error);

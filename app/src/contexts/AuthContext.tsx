@@ -15,7 +15,11 @@ import {
 } from "firebase/auth";
 import { auth } from "@/lib/firebaseConfig";
 import { User } from "@/lib/api/schema";
-import { useSignIn } from "@/lib/api/api-client";
+import {
+  useLoginWithCookie,
+  useSignIn,
+  useSignOut,
+} from "@/lib/api/api-client";
 import { useProject } from "./ProjectContext";
 import { User as FirebaseUser } from "firebase/auth";
 
@@ -23,6 +27,7 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: () => Promise<User | null>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -32,6 +37,9 @@ const AuthContext = createContext<AuthContextType>({
     console.error("AuthContext not initialized properly.");
     return null;
   },
+  logout: async () => {
+    console.error("AuthContext not initialized properly.");
+  },
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -39,16 +47,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [firebaseUser, setFirebaseUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
   const { backendHost } = useProject();
-  const { trigger } = useSignIn(backendHost ?? undefined);
+  const { data } = useLoginWithCookie(backendHost ?? undefined);
+  const { trigger: signInTrigger } = useSignIn(backendHost ?? undefined);
+  const { trigger: signOutTrigger } = useSignOut(backendHost ?? undefined);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setFirebaseUser(user);
       setLoading(false);
+      if (data) {
+        setUser(data);
+      }
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [data]);
 
   const login = useCallback(async (): Promise<User | null> => {
     if (!backendHost) {
@@ -71,7 +84,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
     if (!firebaseUser) return null;
     try {
-      const userData = await trigger({
+      const userData = await signInTrigger({
         name: firebaseUser.displayName || "Anonymous",
         email: firebaseUser.email || "",
       });
@@ -81,10 +94,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error("Failed to log in:", error);
       return null;
     }
-  }, [backendHost, firebaseUser, trigger, user]);
+  }, [backendHost, firebaseUser, user, signInTrigger]);
+
+  const logout = useCallback(async () => {
+    await auth.signOut();
+    setUser(null);
+    setFirebaseUser(null);
+    if (backendHost) {
+      try {
+        await signOutTrigger();
+      } catch (error) {
+        console.error("Failed to clear user on backend:", error);
+      }
+    }
+  }, [backendHost, signOutTrigger, setUser, setFirebaseUser]);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

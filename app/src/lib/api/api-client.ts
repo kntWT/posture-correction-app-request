@@ -35,7 +35,7 @@ const disableRevalidateOption = {
 // 基本的なフェッチャー関数
 // JSONを返すAPIを想定
 const fetcher = async <T>(url: string): Promise<T> => {
-  const res = await fetch(url);
+  const res = await fetch(url, { credentials: "include" });
   if (!res.ok) {
     const error: FetchError = new Error(
       "An error occurred while fetching the data."
@@ -89,6 +89,21 @@ export const useHealthCheck = (host: string, interval: number = 5) => {
 export const useSignIn = (host?: BackendHost) => {
   return useSWRMutation<User, unknown, string | null, UserCreateRequest>(
     host ? `${host.baseUrl}/user/auth/email` : null,
+    postRequest,
+    disableRevalidateOption
+  );
+};
+
+export const useLoginWithCookie = (host?: BackendHost) => {
+  return useSWR<User>(host ? `${host.baseUrl}/user/login` : null, fetcher, {
+    refreshInterval: 0,
+  });
+};
+
+// ユーザをログアウトする
+export const useSignOut = (host?: BackendHost) => {
+  return useSWRMutation<User>(
+    host ? `${host.baseUrl}/user/auth/logout` : null,
     postRequest,
     disableRevalidateOption
   );

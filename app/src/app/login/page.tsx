@@ -43,8 +43,13 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
     try {
-      await login();
-      toast.success(`Hello ${user?.name}! Login successful!`);
+      const u = await login();
+      if (u !== null) {
+        toast.success(`Hello ${u.name}! Login successful!`);
+        router.push("/"); // ログイン成功後にホームへリダイレクト
+      } else {
+        toast.error("Failed to log in. Please try again.");
+      }
     } catch (error: unknown) {
       console.error("Google login failed:", error);
       toast.error(
