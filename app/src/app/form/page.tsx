@@ -29,7 +29,7 @@ export default function FormPage() {
   const [copied, setCopied] = useState(false);
 
   const onSubmit = async (data: ProjectNameSchema) => {
-    setProjectName(data.name);
+    console.log(data);
     if (!user) {
       toast.error("You must be logged in to submit the form.");
       return;
@@ -96,7 +96,7 @@ export default function FormPage() {
           </CardContent>
         </Card>
       ) : (
-        <Card className="">
+        <Card className="min-w-[350px]">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold">
               User Information Form
@@ -104,7 +104,11 @@ export default function FormPage() {
             <CardDescription>Please fill out your details.</CardDescription>
           </CardHeader>
           <CardContent>
-            <ProjectNameForm onSubmit={onSubmit} loading={isCreating} />
+            <ProjectNameForm
+              onSubmit={onSubmit}
+              onChange={(data) => setProjectName(data.name)}
+              loading={isCreating}
+            />
           </CardContent>
         </Card>
       )}
