@@ -88,7 +88,7 @@ export const useHealthCheck = (host: string, interval: number = 5) => {
 // ユーザログインを試し，アカウントがなければ作成する
 export const useSignIn = (host?: BackendHost) => {
   return useSWRMutation<User, unknown, string | null, UserCreateRequest>(
-    host ? `http://${host.host}:${host.port}/user/auth/email` : null,
+    host ? `${host.baseUrl}/user/auth/email` : null,
     postRequest,
     disableRevalidateOption
   );
@@ -97,7 +97,7 @@ export const useSignIn = (host?: BackendHost) => {
 // プロジェクトを作成する
 export const useCreateProject = (host?: BackendHost) => {
   return useSWRMutation<Project, unknown, string | null, ProjectCreateRequest>(
-    host ? `http://${host.host}:${host.port}/project/create` : null,
+    host ? `${host.baseUrl}/project/create` : null,
     postRequest,
     disableRevalidateOption
   );

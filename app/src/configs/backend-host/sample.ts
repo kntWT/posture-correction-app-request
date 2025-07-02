@@ -1,20 +1,21 @@
+/**
+ * NOTE
+ * baseUrl: tailscaleでVPN接続したホストを想定しているので，nginxでプロキシの設定をする
+ */
 const backendHostSamples = [
   {
     name: "Localhost",
-    host: "localhost",
-    port: 3000,
+    baseUrl: "/api/1",
     description: "Local development server",
   },
   {
     name: "Production",
-    host: "api.example.com",
-    port: 443,
+    baseUrl: "/api/2",
     description: "Production API server",
   },
   {
     name: "Staging",
-    host: "staging.example.com",
-    port: 443,
+    baseUrl: "/api/staging",
     description: "Staging environment for testing",
   },
 ] as const;
