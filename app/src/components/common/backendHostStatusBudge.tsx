@@ -19,7 +19,7 @@ export const BackendHostStatusBadge = ({
 }) => {
   const { backendHostsWithStatus, setBackendHostsWithStatus } =
     useBackendHostWithStatus();
-  const { data, isLoading } = useHealthCheck(`${backendHost.baseUrl}`, 5000);
+  const { data, isLoading } = useHealthCheck(`${backendHost.baseUrl}`);
   const [status, setStatus] = useState<HealthCheckStatusColor>(
     HealthCheckStatusColor.DEFAULT
   );
