@@ -1,6 +1,7 @@
 import { BackendHost } from "@/configs/backend-host";
+import { useBackendHostWithStatus } from "@/contexts/BackendHostContext";
 import { useHealthCheck } from "@/lib/api/api-client";
-import { useBackendHostWithStatus } from "../../contexts/BackendHostContext";
+import { useEffect, useState } from "react";
 
 export enum HealthCheckStatusColor {
   SUCCESS = "bg-green-500",
@@ -16,21 +17,37 @@ export const BackendHostStatusBadge = ({
   backendHost: BackendHost;
   size?: number;
 }) => {
-  const { setBackendHostsWithStatus } = useBackendHostWithStatus();
-  const { data, isLoading } = useHealthCheck(
-    `http://${backendHost.host}:${backendHost.port}`
+  const { backendHostsWithStatus, setBackendHostsWithStatus } =
+    useBackendHostWithStatus();
+  const { data, isLoading } = useHealthCheck(`${backendHost.baseUrl}`, 5000);
+  const [status, setStatus] = useState<HealthCheckStatusColor>(
+    HealthCheckStatusColor.DEFAULT
   );
-  let status: HealthCheckStatusColor = HealthCheckStatusColor.DEFAULT;
-  if (isLoading) {
-    status = HealthCheckStatusColor.LOADING;
-    setBackendHostsWithStatus(backendHost.name, false);
-  } else if (!data) {
-    status = HealthCheckStatusColor.ERROR;
-    setBackendHostsWithStatus(backendHost.name, false);
-  } else if (data) {
-    status = HealthCheckStatusColor.SUCCESS;
-    setBackendHostsWithStatus(backendHost.name, true);
-  }
+  useEffect(() => {
+    let available: boolean = false;
+    if (isLoading) {
+      setStatus(HealthCheckStatusColor.LOADING);
+      available = false;
+    } else if (!data) {
+      setStatus(HealthCheckStatusColor.ERROR);
+      available = false;
+    } else if (data) {
+      setStatus(HealthCheckStatusColor.SUCCESS);
+      available = true;
+    }
+    if (
+      backendHost.name &&
+      backendHostsWithStatus[backendHost.name].available !== available
+    ) {
+      setBackendHostsWithStatus(backendHost.name, available);
+    }
+  }, [
+    data,
+    isLoading,
+    backendHost.name,
+    setBackendHostsWithStatus,
+    backendHostsWithStatus,
+  ]);
 
   const className = () =>
     `aspect-square inline-block rounded-full size-${size} ${status}`;

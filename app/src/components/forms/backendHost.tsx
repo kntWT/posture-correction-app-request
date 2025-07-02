@@ -34,6 +34,7 @@ export function BackendHostForm({ onSubmit, defaultValue }: Props) {
       backendHost: defaultValue || undefined,
     },
   });
+  const { backendHostsWithStatus } = useBackendHostWithStatus();
 
   const watchBackendHost = watch("backendHost");
   useEffect(() => {
@@ -41,8 +42,6 @@ export function BackendHostForm({ onSubmit, defaultValue }: Props) {
       onSubmit({ backendHost: watchBackendHost });
     }
   }, [watchBackendHost, onSubmit]);
-
-  const { backendHostsWithStatus } = useBackendHostWithStatus();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
