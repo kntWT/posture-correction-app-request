@@ -11,6 +11,8 @@ server {
         proxy_set_header X-Forwarded-For _proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto _scheme;
 
+        proxy_set_header Origin ${PROXY_ORIGIN};
+
         add_header Access-Control-Allow-Origin https://some.domain.com;
         add_header Access-Control-Allow-Credentials "true";
         add_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
@@ -23,6 +25,8 @@ server {
         proxy_set_header X-Real-IP _remote_addr;
         proxy_set_header X-Forwarded-For _proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto _scheme;
+
+        proxy_set_header Origin ${PROXY_ORIGIN};
 
         add_header Access-Control-Allow-Origin https://some.domain.com;
         add_header Access-Control-Allow-Credentials "true";
