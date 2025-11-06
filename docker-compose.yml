@@ -31,6 +31,8 @@ services:
       - "7001:80"
     depends_on:
       - app
+    volumes:
+      - ./nginx/logs:/var/log/nginx
     networks:
       - posture-correction-app-request
     extra_hosts:
