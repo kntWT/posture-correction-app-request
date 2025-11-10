@@ -1,5 +1,5 @@
 #!/bin/sh
 envsubst < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf
-sed -e "s/_host/\$host/g" -e "s/_remote_addr/\$remote_addr/g" -e "s/_proxy_add_x_forwarded_for/\$proxy_add_x_forwarded_for/g" -e "s/_scheme/\$scheme/g" -e "s/_http_origin/\$http_origin/g" /etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf.tmp
+sed -e "s/_host/\$host/g" -e "s/_remote_addr/\$remote_addr/g" -e "s/_remote_user/\$remote_user/g" -e "s/_time_local/\$time_local/g" -e "s/_time_local/\$time_local/g" -e "s/_request/\$request/g" -e "s/_status/\$status/g" -e "s/_body_bytes_sent/\$body_bytes_sent/g" -e "s/_http_referer/\$http_referer/g" -e "s/_http_user_agent/\$http_user_agent/g" -e "s/_request_id/\$request_id/g" -e "s/_req_id/\$req_id/g" -e "s/_proxy_add_x_forwarded_for/\$proxy_add_x_forwarded_for/g" -e "s/_scheme/\$scheme/g" -e "s/_http_origin/\$http_origin/g" -e "s/_remote_user/\$remote_user/g" /etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf.tmp
 mv /etc/nginx/conf.d/default.conf.tmp /etc/nginx/conf.d/default.conf
 exec nginx -g 'daemon off;'

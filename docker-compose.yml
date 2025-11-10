@@ -33,6 +33,7 @@ services:
       - app
     volumes:
       - ./nginx/logs:/var/log/nginx
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
     networks:
       - posture-correction-app-request
     extra_hosts:
