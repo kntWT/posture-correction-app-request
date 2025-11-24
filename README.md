@@ -1,16 +1,30 @@
-# 姿勢推定 API 利用申請
+# Posture Estimation API Usage Application (For Lab Use)
 
-このリポジトリは、[姿勢推定 API](https://github.com/kntWT/posture-correction-backend)を使ったアプリを作成するための AppId を取得するためのものです．
-Next app を Docker で動かしてます．（アプリの起動に関しては`app/README.md`を参照してください）
+This repository is for obtaining an AppId to create apps using the [Posture Estimation API](https://github.com/kntWT/posture-correction-backend).
 
-# 申請フロー
+# How to Start
 
-- まず研究室の 2 台の Galleria のうちどちらを利用するか選びます
-- その後 Google ログインを行い，そのバックエンドにユーザデータを登録（またはサインイン）します
-- 申請フォームページにいき，プロジェクト名を入力します
-- 作成ボタンを押すと`appId`が表示されるので，メモしてください．（基本的に 1 度しか表示されないので注意してください）
+## Set Environment Variables
 
-# 注意事項
+- Project Root
+  - Set appropriate environment variables referring to `.env.sample`.
+  - Adjust the number of `BACK_END_HOST` as needed, and adjust [docker-compose.yml](docker-compose.yml) and [nginx/default.conf](nginx/default.conf.template.sample) accordingly.
+- app ([README.md](app/README.md))
+- nginx ([README.md](nginx/README.md))
 
-- 姿勢推定 API を使ったアプリ開発をする際は，このアプリで取得した`appId`をリクエストヘッダーに含めるようにしてください（詳細はリポジトリの README.md を参照してください）
-- また，間違えないように注意してください（選択したホスト以外にはとデータが保存されていません）
+## Start
+
+- Start with `docker compose up --build`.
+  - It can be started in development or production environment depending on the environment variable settings.
+
+# Application Flow
+
+- Select the backend host you want to use from the configured ones.
+- Then log in with Google and register user data (or sign in) to that backend.
+- Go to the application form page and enter the project name.
+- When you press the create button, `appId` will be displayed, so please note it down. (Please note that it is basically displayed only once).
+
+# Notes
+
+- When developing an app using the Posture Estimation API, please include the `appId` obtained with this app in the request header (refer to the [repository's README.md](https://github.com/kntWT/posture-correction-backend) for details).
+- Also, be careful not to make a mistake in selecting the host (data is not saved except for the selected host).

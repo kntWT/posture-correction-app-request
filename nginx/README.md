@@ -1,12 +1,12 @@
-# プロキシサーバ
+# Proxy Server
 
-VPN 接続したホストを SSL でアクセスしたページからリクエストを送ると HTTPS でないためエラーを吐かれるため，nginx を介してサーバサイドでプロキシする
+When sending requests from a page accessed via SSL to a VPN-connected host, an error is thrown because it is not HTTPS, so we proxy on the server side via nginx.
 
-# 設定方法
+# Configuration
 
 ```sh
 cp default.conf.template.sample default.conf.template
 ```
 
-を実行し，環境変数を含んだテンプレートを作成してください．\
-ここでは環境変数を埋め込むことができます．（`$`などシェルスクリプトの特殊文字を扱う場合は`entrypoint.sh`を編集して sed でリプレースしてください）
+Execute the above command to create a template containing environment variables.
+You can embed environment variables here. (If you need to handle shell script special characters such as `$`, edit `entrypoint.sh` and replace them with sed.)

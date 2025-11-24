@@ -1,77 +1,68 @@
 # Posture Correction App Request
 
-このリポジトリは、Next.js + TypeScript + Firebase + SWR + Zod + Tailwind CSS などを用いた姿勢矯正アプリのリクエスト管理 Web アプリです。\
-研究室の Galleria2 台のうちどちらを使うか選べます．（選択肢たもの以外にはデータが登録されないので注意してください）
+This repository is a request management web app for the posture correction app using Next.js + TypeScript + Firebase + SWR + Zod + Tailwind CSS, etc.
+You can choose which of the configured at project root settings to use. (Note that data will not be registered to any host other than the selected one.)
 
-## 主な機能
+## Main Features
 
-- Google 認証によるログイン
-- プロジェクト作成
-- バックエンドホストの選択
+- Login with Google Authentication
+- Project Creation
+- Backend Host Selection
 
-## ディレクトリ構成
+## Directory Structure
 
 ```
 app/
   ├─ src/
-  │   ├─ app/         # Next.js App Router配下のページ
-  │   ├─ components/  # UI・フォーム・共通部品
-  │   ├─ contexts/    # React Context (認証・プロジェクト)
-  │   ├─ lib/         # APIクライアント・バリデーションスキーマ等
-  │   ├─ configs/     # バックエンドホスト等の設定
-  ├─ public/          # 静的ファイル
-  ├─ package.json     # 依存パッケージ
+  │   ├─ app/         # Pages under Next.js App Router
+  │   ├─ components/  # UI, forms, common components
+  │   ├─ contexts/    # React Context (Auth, Project)
+  │   ├─ lib/         # API clients, validation schemas, etc.
+  │   ├─ configs/     # Backend host settings, etc.
+  ├─ public/          # Static files
+  ├─ package.json     # Dependency packages
   ├─ ...
 ```
 
-## セットアップ方法
+## Setup Instructions
 
-1. 依存パッケージのインストール
+1. Install dependencies
 
 ```bash
 pnpm install
 ```
 
-2. 開発サーバ起動
+2. Start development server
 
 ```bash
 pnpm dev
 ```
 
-3. ブラウザで [http://localhost:3000](http://localhost:3000) を開く
+3. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Docker での起動
+## Start with Docker
 
-1. `.env` ファイルをプロジェクトルートに作成し、必要な環境変数を記載
-2. 下記コマンドで起動
+1. Create a `.env` file in the project root and describe the necessary environment variables
+2. Start with the following command
 
 ```bash
 docker compose up --build
 ```
 
-## 主な技術スタック
+## Main Tech Stack
 
 - Next.js 15 (App Router)
 - React 19
 - TypeScript
 - Firebase Auth
-- SWR (API 通信)
-- react-hook-form + zod (バリデーション)
+- SWR (API communication)
+- react-hook-form + zod (Validation)
 - Tailwind CSS, shadcn/ui, lucide-react (UI)
 
-## 環境変数
+## Environment Variables
 
-- env.d.ts を参考に適切な環境変数を設定してください
-- バックエンドホストの選択肢を`app/src/configs/backend-host/backendHost.ts`で定義しています．同じディレクトリの`sample.ts`を参考に定義してください．\
-  ここで設定した`baseUrl`を nginx でプロキシするようにしてください．\
-  また，この時`as const`をつけないと型情報がおかしくなるので注意してください．
-
-## 開発 Tips
-
-- バックエンドホストやユーザ情報は localStorage で永続化され、リロードしても保持されます。
-- API 連携は SWR のカスタムフックで行っています。
-- 型安全なバリデーションは zod で実装。
-
----
-
-ご不明点・要望は Issue または PR でご連絡ください。
+- Set appropriate environment variables referring to `env.d.ts`
+  - You need to create a project on [Firebase](https://firebase.google.com/docs/guides/setup)
+- Backend host options are defined in `app/src/configs/backend-host/backendHost.ts`. Please define it referring to `sample.ts` in the same directory.
+  Please configure nginx to proxy the `baseUrl` set here.
+  Also, be careful that type information will be incorrect if you do not attach `as const` at this time.
