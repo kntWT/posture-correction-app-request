@@ -1,4 +1,4 @@
-# 姿勢推定 API 利用申請（研究室内向け）
+# 姿勢推定 API 利用申請
 
 このリポジトリは、[姿勢推定 API](https://github.com/kntWT/posture-correction-backend)を使ったアプリを作成するための AppId を取得するためのものです．
 

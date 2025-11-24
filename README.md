@@ -1,4 +1,4 @@
-# Posture Estimation API Usage Application (For Lab Use)
+# Posture Estimation API Usage Application
 
 This repository is for obtaining an AppId to create apps using the [Posture Estimation API](https://github.com/kntWT/posture-correction-backend).
 
